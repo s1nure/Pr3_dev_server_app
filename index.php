@@ -1,41 +1,33 @@
 <?php
-session_start();
-include 'student.php';
 
-$student = new Student;
+include 'subjects.php';
 
-if (isset($_POST) && isset($_POST['login']) && isset($_POST['password'])) {
-    $student->login();
-}
+$subjectsObj = new Subjects();
 
-if (isset($_POST) && isset($_POST['name']) && !empty($_POST['surename']) && isset($_POST['age'])) {
-    $student->add_student();
-}
-if (isset($_POST['logout'])) {
-    $student->logOut();
-}
+$subjectsObj->show();
+
+$subjectsObj->changeArray('Фізкультура', 'Історія');
+$subjectsObj->show();
+
+$uniqueSubjects = array_unique($subjectsObj->subjects_array);
+$subjectsObj->displayArray($uniqueSubjects);
+
+$subjectsObj->changeArray2('Історія', 'Фізкультура', 2);
+$subjectsObj->show();
+
+asort($subjectsObj->subjects_array);
+$subjectsObj->show();
+
+$subjectsObj->expansion();
+$subjectsObj->show();
+
+$subarrays = $subjectsObj->getSubarrays();
+$subjectsObj->displayArray($subarrays);
+
+$subjectsObj->displayArray(explode(', ', $subjectsObj->students));
+
+$studentsArray = explode(', ', $subjectsObj->students);
+$subjectsObj->students = implode(', ', $studentsArray);
+$subjectsObj->displayArray([$subjectsObj->students]);
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-    <?php
-    if (isset($_SESSION['login']) && $_SESSION['login']) {
-        include 'form.php';
-    } else {
-        include 'login.php';
-    }
-
-
-    ?>
-</body>
-
-</html>
